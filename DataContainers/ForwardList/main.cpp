@@ -10,13 +10,15 @@ using std::endl;
 #define delimiter "\n---------------------------------------------------\n"
 
 class ForwardList;
+
+template<typename T>
 class Element
 {
-	int Data;			//Значение элемента
-	Element* pNext;		//Адрес следующего элемента
+	T Data;			//Значение элемента
+	Element<T>* pNext;		//Адрес следующего элемента
 	static int count;
 public:
-	Element(int Data, Element* pNext = nullptr)
+	Element(T Data, Element<T>* pNext = nullptr)
 	{
 		this->Data = Data;
 		this->pNext = pNext;
@@ -32,12 +34,13 @@ public:
 		cout << "EDestructor:\t" << this << endl;
 #endif // DEBUG
 	}
-	friend class Iterator;
-	friend class ForwardList;
+	friend class Iterator<T>;
+	friend class ForwardList<T>;
 	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 };
-int Element::count = 0;
+int Element<T>::count = 0;
 
+template<typename T>
 class Iterator
 {
 	Element* Temp;
@@ -69,16 +72,17 @@ public:
 	{
 		return this->Temp != other.Temp;
 	}
-	int operator*()const
+	T operator*()const
 	{
 		return Temp->Data;
 	}
-	int& operator*()
+	T& operator*()
 	{
 		return Temp->Data;
 	}
 };
 
+template<typename T>
 class ForwardList
 {
 	Element* Head;
@@ -112,7 +116,7 @@ public:
 		while (size--)push_front(0);
 		cout << "FLSizeConstructor:\t" << this << endl;
 	}
-	ForwardList(const std::initializer_list<int>& il) :ForwardList()
+	ForwardList(const std::initializer_list<T>& il) :ForwardList()
 	{
 		//initializer_list - это контейнер.
 		//Контейнер - это объект, который организует хранение других объектов в памяти.
@@ -175,7 +179,7 @@ public:
 		for (int i = 0; i < index; i++)Temp = Temp->pNext;
 		return Temp->Data;
 	}
-	int& operator[](int index)
+	T& operator[](int index)
 	{
 		Element* Temp = Head;
 		for (int i = 0; i < index; i++)Temp = Temp->pNext;
@@ -184,7 +188,7 @@ public:
 
 
 	//			Adding elements:
-	void push_front(int Data)
+	void push_front(T Data)
 	{
 		////1) Создаем элемент и сохраняем в него добавляемое значение:
 		//Element* New = new Element(Data);
@@ -199,7 +203,7 @@ public:
 
 		size++;
 	}
-	void push_back(int Data)
+	void push_back(T Data)
 	{
 		if (Head == nullptr)return push_front(Data);
 		Element* Temp = Head;
@@ -207,7 +211,7 @@ public:
 		Temp->pNext = new Element(Data);
 		size++;
 	}
-	void insert(int Data, int Index)
+	void insert(T Data, int Index)
 	{
 		if (Index == 0)return push_front(Data);
 		if (Index >= size)return push_back(Data);
@@ -296,7 +300,7 @@ ForwardList operator+(const ForwardList& left, const ForwardList& right)
 	return fusion;
 }
 
-void Print(int arr[])
+void Print(T arr[])
 {
 	cout << typeid(arr).name() << endl;
 	cout << sizeof(arr) / sizeof(arr[0]) << endl;

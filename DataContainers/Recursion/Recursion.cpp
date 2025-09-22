@@ -41,6 +41,7 @@ int main()
 	int choice;
 	while (true)
 	{
+		
 		std::cout << R"(
 Выберите пункт меню:
 
@@ -72,6 +73,8 @@ int main()
 			{
 				std::cerr << "Ошибка: " << e.what() << " Попробуйте снова!" << std::endl;
 			}
+			system("pause");     
+			system("cls");
 		}	break;
 
 		case 2:
@@ -85,7 +88,8 @@ int main()
 			std::cin >> B;
 
 			std::cout << "Число " << A << " в степени " << B << " составляет: " << Power(A, B) << std::endl;
-
+			system("pause");
+			system("cls");
 			break;
 		}
 		case 3:
@@ -96,6 +100,8 @@ int main()
 			std::cin >> Limits;
 
 			Fibonacci(0, 1, Limits);
+			system("pause");
+			system("cls");
 			break;
 		}
 		case 4:
@@ -108,6 +114,8 @@ int main()
 		default:
 		{
 			std::cout << "Некорректный ввод! Повторите ввод." << std::endl;
+			system("pause");
+			system("cls");
 			break;
 		}
 
