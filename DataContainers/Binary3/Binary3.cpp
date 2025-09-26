@@ -279,24 +279,28 @@ private:
 
     int Depth(Element* Root)const
     {
-        if (Root == nullptr) return 0;
-        /*else
-        {
-            int l = Depth(Root->pLeft);
-            int r = Depth(Root->pRight);
-            if (r > l)
-            {
-                return 1 + r;
+        //if (Root == nullptr) return 0;
+        ///*else
+        //{
+        //    int l = Depth(Root->pLeft);
+        //    int r = Depth(Root->pRight);
+        //    if (r > l)
+        //    {
+        //        return 1 + r;
 
-            }
-            else
-            {
-                return 1 + l;
-            }   
-        }   */
-        int l = Depth(Root->pLeft);
-        int r = Depth(Root->pRight);
-        return 1 + (l > r ? l : r);
+        //    }
+        //    else
+        //    {
+        //        return 1 + l;
+        //    }   
+        //}   */
+        //int l = Depth(Root->pLeft);
+        //int r = Depth(Root->pRight);
+        //return 1 + (l > r ? l : r);
+        return Root == nullptr ? 0 :
+            Depth(Root->pLeft) + 1 > Depth(Root->pRight) + 1 ?
+            Depth(Root->pLeft) + 1 :
+            Depth(Root->pRight) + 1;
     }
 
 };
@@ -323,7 +327,19 @@ public:
         insert(Data, Root);
     }
 };
+
+template <typename T>
+void measure_performance(const char message[],T(Tree::*function)()const, const Tree& tree)
+{
+    //int(* function)() - указатель на функцию, которая ничего не принимает и возвращает значение типа инт
+    clock_t start = clock();
+    T result = (tree.*function)();
+    clock_t end = clock();
+    cout << message << result << ", вычислено за " << double(end - start) / CLOCKS_PER_SEC << " секунд\n";
+}
 //#define BASE_CHECK
+//#define ERASE_CHECK
+//#define PERFORMANCE_CHECK_HOME
 
 int main()
 {
@@ -384,37 +400,41 @@ int main()
     return 0;
 #endif // DEBUG
 
-   /* Tree tree = {     50,
+#ifdef ERASE_CHECK
+    Tree tree = { 50,
 
-             25,            75, 
+ 25,            75,
 
-        16,      32,   58,       85
+16,      32,   58,       85
     };
     tree.Print();
-    int value;*/
+    int value;
     //cout << "Введите удаляемое значение:" << endl;
     //cin>>value;
-    /*tree.Erase(25);
+    tree.Erase(25);
     tree.Erase(32);
     tree.Erase(50);
     tree.Erase(75);
-    tree.Print();*/
+    tree.Print();
+#endif // ERASE_CHECK
+
 
     //cout<<"Глубина дерева составляет: "<<tree.Depth()<<endl;
 
+#ifdef PERFORMANCE_CHECK_HOME
     int n;
     cout << "Введите количество элементов: "; cin >> n;
     Tree tree;
-    
+
     for (int i = 0; i < n; ++i)
     {
         tree.insert(rand() % 100);
     }
-    
+
     clock_t t_start, t_end;
 
     t_start = clock();
-    tree.count();  
+    tree.count();
     t_end = clock();
     cout << "Время затраченное на count(): " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд" << endl;
     system("PAUSE");
@@ -453,7 +473,39 @@ int main()
     cout << "Глубина: " << depth << endl;
     cout << "Время затраченное на Depth(): " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд" << endl;
     system("PAUSE");
+#endif // PERFORMANCE_CHECK_HOME
+
+    int n;
+
+    cout << "Введите количество элементов: "; cin >> n;
+    Tree tree;
     
+    for (int i = 0; i < n; ++i)
+    {
+        tree.insert(rand() % 100);
+    }
+
+    /*tree.Print();
+    cout << endl;
+    cout << "Минимальное значение в дереве: " << tree.minValue() << endl;
+    cout << "Максимальное значение в дереве: " << tree.maxValue() << endl;
+    cout << "Количество элементов дерева: " << tree.count() << endl;
+    cout << "Сумма всех элементов бинарного дерева: " << tree.Summa() << endl;
+    cout << "Среднее арифметическое элементов бинарного деерва: " << tree.Average() << endl;
+    cout << "Глубина дерева:" << tree.Depth() << endl;*/
+    
+    measure_performance("Минимальное значение в дереве: ", &Tree::minValue, tree);
+
+    measure_performance("Максимальное значение в дереве: ", &Tree::maxValue, tree);
+
+    measure_performance("Количество элементов в дереве: ", &Tree::count, tree);
+
+    measure_performance("Сумма всех элементов в дереве: ", &Tree::Summa, tree);
+
+    measure_performance("Среднее арифметическое элементов дерева : ", &Tree::Average, tree);
+
+    //measure_performance("Глубина дерева: ", &Tree::Depth, tree);
+
 }
 
 
