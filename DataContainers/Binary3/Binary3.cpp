@@ -1,12 +1,12 @@
 ﻿
 #include <iostream>
 #include <time.h>
-#include <vector>
-
+//#include <vector>
+#include <algorithm>
+//#define MAX(a,b)a>b?a:b
 using std::cout;
 using std::cin;
 using std::endl;
-using namespace std;
 
 #define tab "\t"
 
@@ -279,6 +279,11 @@ private:
 
     int Depth(Element* Root)const
     {
+        return Root == nullptr ? 0 : std::max(Depth(Root->pLeft) + 1, Depth(Root->pRight) + 1);
+        /*if (Root == nullptr)return 0;
+        int l_depth = Depth(Root->pLeft)+1;
+        int r_depth = Depth(Root->pRight)+1;
+        return l_depth < r_depth ? r_depth : l_depth;*/
         //if (Root == nullptr) return 0;
         ///*else
         //{
@@ -297,10 +302,12 @@ private:
         //int l = Depth(Root->pLeft);
         //int r = Depth(Root->pRight);
         //return 1 + (l > r ? l : r);
-        return Root == nullptr ? 0 :
+        /*return Root == nullptr ? 0 :
             Depth(Root->pLeft) + 1 > Depth(Root->pRight) + 1 ?
             Depth(Root->pLeft) + 1 :
-            Depth(Root->pRight) + 1;
+            Depth(Root->pRight) + 1;*/
+
+
     }
 
 };
@@ -340,6 +347,7 @@ void measure_performance(const char message[],T(Tree::*function)()const, const T
 //#define BASE_CHECK
 //#define ERASE_CHECK
 //#define PERFORMANCE_CHECK_HOME
+#define PERFORMANCE_CHECK
 
 int main()
 {
@@ -403,23 +411,23 @@ int main()
 #ifdef ERASE_CHECK
     Tree tree = { 50,
 
- 25,            75,
+          25,            75,
 
-16,      32,   58,       85
+      16,      32,   58,       85,91
     };
     tree.Print();
     int value;
     //cout << "Введите удаляемое значение:" << endl;
     //cin>>value;
-    tree.Erase(25);
+    /*tree.Erase(25);
     tree.Erase(32);
     tree.Erase(50);
-    tree.Erase(75);
+    tree.Erase(75);*/
     tree.Print();
+    cout<<"Глубина дерева составляет: "<<tree.Depth()<<endl;
 #endif // ERASE_CHECK
 
 
-    //cout<<"Глубина дерева составляет: "<<tree.Depth()<<endl;
 
 #ifdef PERFORMANCE_CHECK_HOME
     int n;
@@ -475,11 +483,12 @@ int main()
     system("PAUSE");
 #endif // PERFORMANCE_CHECK_HOME
 
+#ifdef PERFORMANCE_CHECK
     int n;
 
     cout << "Введите количество элементов: "; cin >> n;
     Tree tree;
-    
+
     for (int i = 0; i < n; ++i)
     {
         tree.insert(rand() % 100);
@@ -493,7 +502,7 @@ int main()
     cout << "Сумма всех элементов бинарного дерева: " << tree.Summa() << endl;
     cout << "Среднее арифметическое элементов бинарного деерва: " << tree.Average() << endl;
     cout << "Глубина дерева:" << tree.Depth() << endl;*/
-    
+
     measure_performance("Минимальное значение в дереве: ", &Tree::minValue, tree);
 
     measure_performance("Максимальное значение в дереве: ", &Tree::maxValue, tree);
@@ -504,7 +513,9 @@ int main()
 
     measure_performance("Среднее арифметическое элементов дерева : ", &Tree::Average, tree);
 
-    //measure_performance("Глубина дерева: ", &Tree::Depth, tree);
+    measure_performance("Глубина дерева: ", &Tree::Depth, tree);
+
+#endif // PERFORMANCE_CHECK
 
 }
 
