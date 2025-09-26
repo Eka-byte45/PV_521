@@ -1,10 +1,16 @@
 ﻿
 #include <iostream>
+#include <time.h>
+#include <vector>
+
+using std::cout;
+using std::cin;
+using std::endl;
 using namespace std;
 
 #define tab "\t"
 
-#define DEBUG   
+//#define DEBUG   
 //#define - определить
 //#defined - определено
 
@@ -97,10 +103,17 @@ public:
         Print(Root);
         cout << endl;
     }
+    int Depth()const
+    {
+        return Depth(Root);
+    }
+
     double Average()const
     {
         return (double)Summa(Root) / count(Root);
     }
+
+   
 private:
     void insert(int Data, Element* Root)
     {
@@ -160,11 +173,11 @@ private:
 
     }
   
-    /*void Clear()
+    void Clear()
     {
         Clear(Root);
         Root = nullptr;
-    }*/
+    }
 
     void Clear(Element*& Root)
     {
@@ -264,6 +277,28 @@ private:
     //    return Root;
     //}
 
+    int Depth(Element* Root)const
+    {
+        if (Root == nullptr) return 0;
+        /*else
+        {
+            int l = Depth(Root->pLeft);
+            int r = Depth(Root->pRight);
+            if (r > l)
+            {
+                return 1 + r;
+
+            }
+            else
+            {
+                return 1 + l;
+            }   
+        }   */
+        int l = Depth(Root->pLeft);
+        int r = Depth(Root->pRight);
+        return 1 + (l > r ? l : r);
+    }
+
 };
 class UniqueTree :public Tree
 {
@@ -349,20 +384,76 @@ int main()
     return 0;
 #endif // DEBUG
 
-    Tree tree = {     50,
+   /* Tree tree = {     50,
 
              25,            75, 
 
         16,      32,   58,       85
     };
     tree.Print();
-    int value;
+    int value;*/
     //cout << "Введите удаляемое значение:" << endl;
     //cin>>value;
-    tree.Erase(25);
+    /*tree.Erase(25);
     tree.Erase(32);
     tree.Erase(50);
     tree.Erase(75);
-    tree.Print();
+    tree.Print();*/
+
+    //cout<<"Глубина дерева составляет: "<<tree.Depth()<<endl;
+
+    int n;
+    cout << "Введите количество элементов: "; cin >> n;
+    Tree tree;
+    
+    for (int i = 0; i < n; ++i)
+    {
+        tree.insert(rand() % 100);
+    }
+    
+    clock_t t_start, t_end;
+
+    t_start = clock();
+    tree.count();  
+    t_end = clock();
+    cout << "Время затраченное на count(): " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд" << endl;
+    system("PAUSE");
+
+    t_start = clock();
+    int minVal = tree.minValue();
+    t_end = clock();
+    cout << "Минимальное значение: " << minVal << endl;
+    cout << "Время затраченное на minValue(): " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд" << endl;
+    system("PAUSE");
+
+    t_start = clock();
+    int maxVal = tree.maxValue();
+    t_end = clock();
+    cout << "Максимальное значение: " << maxVal << endl;
+    cout << "Время затраченное на maxValue(): " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд" << endl;
+    system("PAUSE");
+
+    t_start = clock();
+    int summa = tree.Summa();
+    t_end = clock();
+    cout << "Сумма: " << summa << endl;
+    cout << "Время затраченное на Summa(): " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд" << endl;
+    system("PAUSE");
+
+    t_start = clock();
+    double average = tree.Average();
+    t_end = clock();
+    cout << "Сумма: " << average << endl;
+    cout << "Время затраченное на Average(): " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд" << endl;
+    system("PAUSE");
+
+    t_start = clock();
+    int depth = tree.Depth();
+    t_end = clock();
+    cout << "Глубина: " << depth << endl;
+    cout << "Время затраченное на Depth(): " << double(t_end - t_start) / CLOCKS_PER_SEC << " секунд" << endl;
+    system("PAUSE");
+    
 }
+
 
