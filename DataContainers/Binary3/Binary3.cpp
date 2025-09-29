@@ -98,6 +98,16 @@ public:
         return count(Root);
     }
 
+    void depth_print(int depth,int width)const
+    {
+        depth_print(depth,Root,width);
+        cout << endl;
+
+    }
+    void tree_print()const
+    {
+        tree_print(Depth(),4*Depth());
+    }
     void Print()const
     {
         Print(Root);
@@ -144,7 +154,28 @@ private:
         /**if (Root->pRight == nullptr)return Root->Data;
         else return maxValue(Root->pRight);*/
     }
+    void depth_print(int depth, Element* Root,int width)const
+    {
+        if (Root == nullptr)return;
+        if (depth == 0)
+        {
+            cout.width(width);
+            cout << Root->Data;
+               
+        }
+        depth_print(depth - 1, Root->pLeft,width);
+        depth_print(depth - 1, Root->pRight,width);
 
+    }
+    void tree_print(int depth,int width)const
+    {
+
+        if (depth == -1)return;
+        tree_print(depth - 1, width * 1.5);
+        depth_print(depth - 1,width);
+        cout << endl;
+        cout << endl;
+    }
     void Print(Element* Root)const
     {
         if (Root == nullptr)return;
@@ -310,6 +341,8 @@ private:
 
     }
 
+
+
 };
 class UniqueTree :public Tree
 {
@@ -346,8 +379,9 @@ void measure_performance(const char message[],T(Tree::*function)()const, const T
 }
 //#define BASE_CHECK
 //#define ERASE_CHECK
+#define DEPTH_CHECK
 //#define PERFORMANCE_CHECK_HOME
-#define PERFORMANCE_CHECK
+//#define PERFORMANCE_CHECK
 
 int main()
 {
@@ -408,23 +442,18 @@ int main()
     return 0;
 #endif // DEBUG
 
-#ifdef ERASE_CHECK
+#ifdef DEPTH_CHECK
     Tree tree = { 50,
 
           25,            75,
 
-      16,      32,   58,       85,91
+      16,      32,   58,       85//,91,98
     };
     tree.Print();
-    int value;
-    //cout << "Введите удаляемое значение:" << endl;
-    //cin>>value;
-    /*tree.Erase(25);
-    tree.Erase(32);
-    tree.Erase(50);
-    tree.Erase(75);*/
-    tree.Print();
     cout<<"Глубина дерева составляет: "<<tree.Depth()<<endl;
+    //tree.depth_print(3);
+    tree.tree_print();
+
 #endif // ERASE_CHECK
 
 

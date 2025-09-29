@@ -82,7 +82,7 @@ public:
 class ForwardList
 {
 	Element* Head;
-	size_t size;	
+	size_t size;
 public:
 	Element* get_Head()const
 	{
@@ -107,7 +107,7 @@ public:
 		size = 0;
 		cout << "FLConstructor:\t" << this << endl;
 	}
-	explicit ForwardList(int size):ForwardList()
+	explicit ForwardList(int size) :ForwardList()
 	{
 		while (size--)push_front(0);
 		cout << "FLSizeConstructor:\t" << this << endl;
@@ -126,7 +126,7 @@ public:
 		}
 		cout << "FLitConstructor:\t" << this << endl;
 	}
-	ForwardList(const ForwardList& other):ForwardList()
+	ForwardList(const ForwardList& other) :ForwardList()
 	{
 		//Deep copy (Побитовое копирование):
 		*this = other;
@@ -141,7 +141,7 @@ public:
 		clock_t t_start = clock();
 		while (Head)pop_front();
 		clock_t t_end = clock();
-		cout << "FLDestructor:\t" << this << "\tcomplete for " << double(t_end-t_start)/CLOCKS_PER_SEC << endl;
+		cout << "FLDestructor:\t" << this << "\tcomplete for " << double(t_end - t_start) / CLOCKS_PER_SEC << endl;
 	}
 
 	//			Operators:
@@ -152,7 +152,7 @@ public:
 		//2) Deep copy (Побитовое копирование):
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
 			push_front(Temp->Data);
-			//push_back(Temp->Data);
+		//push_back(Temp->Data);
 		reverse();
 		cout << "FLCopyAssignment:\t" << this << endl;
 		return *this;
@@ -256,7 +256,7 @@ public:
 			pop_front();	//и удаляем начальный элемент списка
 		}
 		//Подменяем наш список реверсным:
-		/*Head = reverse.Head;	
+		/*Head = reverse.Head;
 		size = reverse.size;	*/
 		*this = std::move(reverse);	//Это встроенная функция, которая явным образом вызывает MoveAssignment,
 		//если он есть, в противном случае behavior is undefined.
@@ -278,7 +278,7 @@ public:
 		//Temp->;	//Элемент 'Temp';
 		*/
 
-		for(Element* Temp = Head; Temp; Temp=Temp->pNext)
+		for (Element* Temp = Head; Temp; Temp = Temp->pNext)
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
 		cout << "Количество элементов списка: " << size << endl;
 		cout << "Общее количество элементов:  " << Element::count << endl;
@@ -395,7 +395,7 @@ void main()
 		list.push_front(rand() % 100);
 	}
 	clock_t t_end = clock();
-	cout << "ForwardList filled for " << double(t_end - t_start)/CLOCKS_PER_SEC << " sec. ";
+	cout << "ForwardList filled for " << double(t_end - t_start) / CLOCKS_PER_SEC << " sec. ";
 	system("PAUSE");
 #endif // PERFORMANCE_CHECK
 
