@@ -1,7 +1,6 @@
 ﻿
 #include <iostream>
 #include <time.h>
-//#include <vector>
 #include <algorithm>
 //#define MAX(a,b)a>b?a:b
 using std::cout;
@@ -68,6 +67,12 @@ public:
         cout << "TDestructor:\t" << this << endl;
     }
 
+    void balance()
+    {
+        balance(Root);
+        cout << "Left count:\t" << count(Root->pLeft)<<endl;
+        cout << "Right count:\t" << count(Root->pRight) << endl;
+    }
     void insert(int Data)
     {
         insert(Data, Root);
@@ -125,6 +130,31 @@ public:
 
    
 private:
+    void balance(Element* Root)
+    {
+        if (Root == nullptr)return;
+        if (abs(count(Root->pLeft) - count(Root->pRight)) < 2) return;
+        if (count(Root->pLeft) < count(Root->pRight))
+        {
+            if (Root->pLeft) insert(Root->Data, Root->pLeft);
+            else Root->pLeft = new Element(Root->Data);
+            insert(Root->Data, Root->pLeft);
+            Root->Data = minValue(Root->pRight);
+            Erase(minValue(Root->pRight), Root->pRight);
+            //balance(Root);
+        }
+        if (count(Root->pLeft) > count(Root->pRight))
+        {
+            if (Root->pRight) insert(Root->Data, Root->pRight);
+            else Root->pRight = new Element(Root->Data);
+            Root->Data = maxValue(Root->pLeft);
+            Erase(maxValue(Root->pLeft), Root->pLeft);
+            //balance(Root);
+        }
+        balance(Root->pLeft);
+        balance(Root->pRight);
+        balance(Root);
+    }
     void insert(int Data, Element* Root)
     {
         if (this->Root == nullptr) this->Root = new Element(Data);
@@ -156,6 +186,7 @@ private:
     }
     void depth_print(int depth, Element* Root,int width)const
     {
+        
         if (Root == nullptr)return;
         if (depth == 0)
         {
@@ -169,8 +200,7 @@ private:
     }
     void tree_print(int depth,int width)const
     {
-
-        if (depth == -1)return;
+        if (depth == -1) return;
         tree_print(depth - 1, width * 1.5);
         depth_print(depth - 1,width);
         cout << endl;
@@ -447,12 +477,18 @@ int main()
 
           25,            75,
 
-      16,      32,   58,       85//,91,98
+      16,      32,   58,       85, //91,98
     };
     tree.Print();
     cout<<"Глубина дерева составляет: "<<tree.Depth()<<endl;
     //tree.depth_print(3);
     tree.tree_print();
+
+    Tree tree2 = { 55,34,21,13,8,5,3 };
+    tree2.tree_print();
+    tree2.balance();
+    tree2.tree_print();
+    cout << "Left count: " << tree2.count();
 
 #endif // ERASE_CHECK
 
@@ -545,6 +581,9 @@ int main()
     measure_performance("Глубина дерева: ", &Tree::Depth, tree);
 
 #endif // PERFORMANCE_CHECK
+
+
+
 
 }
 
