@@ -13,7 +13,6 @@ using std::endl;
 //#define - определить
 //#defined - определено
 
-
 class Tree
 {
 protected:
@@ -66,7 +65,7 @@ public:
         Clear(Root);
         cout << "TDestructor:\t" << this << endl;
     }
-
+    
     void balance()
     {
         balance(Root);
@@ -367,11 +366,7 @@ private:
             Depth(Root->pLeft) + 1 > Depth(Root->pRight) + 1 ?
             Depth(Root->pLeft) + 1 :
             Depth(Root->pRight) + 1;*/
-
-
     }
-
-
 
 };
 class UniqueTree :public Tree
@@ -484,7 +479,7 @@ int main()
     //tree.depth_print(3);
     tree.tree_print();
 
-    Tree tree2 = { 55,34,21,13,8,5,3 };
+    Tree tree2 = { 55,34,21,13,8,5,3};
     tree2.tree_print();
     tree2.balance();
     tree2.tree_print();
@@ -581,9 +576,6 @@ int main()
     measure_performance("Глубина дерева: ", &Tree::Depth, tree);
 
 #endif // PERFORMANCE_CHECK
-
-
-
 
 }
 
