@@ -189,6 +189,7 @@ public:
 		Element* Temp = Head;
 		for (int i = 0; i < index; i++)Temp = Temp->pNext;
 		return Temp->Data;
+
 	}
 
 
