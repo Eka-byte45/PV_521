@@ -171,12 +171,21 @@ public:
 
 	int operator[](int index)const
 	{
+		if (index < 0 || index >= Element::count)
+		{
+			throw std::out_of_range("Индекс находится вне допустимого диапазона!");
+		}
 		Element* Temp = Head;
 		for (int i = 0; i < index; i++)Temp = Temp->pNext;
 		return Temp->Data;
 	}
+
 	int& operator[](int index)
 	{
+		if (index < 0 || index >= size)
+		{
+			throw std::out_of_range("Индекс находится вне допустимого диапазона!");
+		}
 		Element* Temp = Head;
 		for (int i = 0; i < index; i++)Temp = Temp->pNext;
 		return Temp->Data;
@@ -209,6 +218,10 @@ public:
 	}
 	void insert(int Data, int Index)
 	{
+		if (Index < 0 || Index > size)
+		{
+			throw std::out_of_range("Индекс вне допустимого диапазона!");
+		}
 		if (Index == 0)return push_front(Data);
 		if (Index >= size)return push_back(Data);
 		//1) Доходим до нужного элемента (элемент перед добавляемым)
@@ -228,6 +241,10 @@ public:
 	//				Removing elements:
 	void pop_front()
 	{
+		if (Head == nullptr)
+		{
+			throw std::out_of_range("Удаление из пустого списка!");
+		}
 		//1) Запоминаем адрес удаляемого элемента:
 		Element* Erased = Head;
 		//2) Исключаем удаляемый элемент из списка:
@@ -238,7 +255,11 @@ public:
 	}
 	void pop_back()
 	{
-		if (Head == nullptr || Head->pNext == nullptr)return pop_front();
+		if (Head == nullptr)
+		{
+			throw std::out_of_range("Удаление из пустого списка!");
+		}
+		if (Head->pNext == nullptr)return pop_front();
 		Element* Temp = Head;
 		while (Temp->pNext->pNext != nullptr)Temp = Temp->pNext;
 		delete Temp->pNext;
@@ -484,13 +505,45 @@ void main()
 	Print(arr);
 #endif // RANGE_BASED_FOR_ARRAY
 
-	ForwardList list = { 3, 5, 8, 13, 21 };	//Перечисление значений в фигурных скобках через запятую неявно создает объект класса 'initializer_list';
-	list.print();
-	for (int i : list)cout << i << tab; cout << endl;
-	cout << delimiter << endl;
-	for (Iterator it = list.begin(); it != list.end(); ++it)
+	//ForwardList list = { 3, 5, 8, 13, 21 };	//Перечисление значений в фигурных скобках через запятую неявно создает объект класса 'initializer_list';
+	//list.print();
+	//for (int i : list)cout << i << tab; cout << endl;
+	//cout << delimiter << endl;
+	//for (Iterator it = list.begin(); it != list.end(); ++it)
+	//{
+	//	cout << *it << tab;
+	//}
+	//cout << endl;
+
+	ForwardList list = { 3,15,23,42 };
+	ForwardList list2;
+	try
 	{
-		cout << *it << tab;
+		//cout << "Вставка элемента по отрицательному индексу: " << endl;
+		//cout << "Элемент: " << list[-1] << endl;
+		//cout << endl;
+
+		//cout << "Установка элемента с некорректным индексом: " << endl;
+		//list[5] = 100;
+		//cout << "Элемент с индексом 5 успешно изменён." << endl;
+		//cout << endl;
+
+		//std::cout << "Проверка метода insert():" << endl;
+		//list.insert(500, 20);
+		//cout << endl;
+
+		//cout << "Проверка метода pop_front(): " << endl;
+		//list2.pop_front();
+		//cout << endl;
+
+		cout << "Проверка метода pop_back(): " << endl;
+		list2.pop_back();
+		cout << endl;
 	}
-	cout << endl;
+	catch (const std::out_of_range& e)
+	{
+		cerr << "Ошибка: " << e.what() << endl; 
+	}
+
+
 }

@@ -250,9 +250,12 @@ public:
 
 	void insert(int Data, int Index)
 	{
-		if (Index < 0)return;
+		if (Index < 0|| Index > size)
+		{
+			throw std::out_of_range("Индекс вне допустимого диапозона!");
+		}
 		if (Index == 0 || size == 0)return push_front(Data);
-		if (Index >= size)return push_back(Data);
+		if (Index == size)return push_back(Data);
 		//1) Доходим до нужного элемента:
 		Element* Temp;
 		if (Index < size / 2)
@@ -287,7 +290,10 @@ public:
 	//				Removing elements:
 	void pop_front()
 	{
-		if (Head == nullptr && Tail == nullptr)return;
+		if (Head == nullptr)
+		{
+			throw std::out_of_range("Нельзя удалить элемент из пустого списка!");
+		}
 		if (Head == Tail)	//Если Голова и Хвост равны, значит они указывают либо на 0 либо на один и тот же элемент.
 			//Ситуацию с пестым списком обрабатывает предыдущее условие.
 			//Ситуацию с выроженным списком обрабатывает текущее условие, и в этом if-е удаляется один елинственный элемент списка.
@@ -313,7 +319,10 @@ public:
 	}
 	void pop_back()
 	{
-		if (Head == nullptr && Tail == nullptr)return;
+		if (Tail == nullptr)
+		{
+			throw std::out_of_range("Нельзя удалить элемент из пустого списка!");
+		}
 		if (Head == Tail)
 		{
 			delete Tail;
@@ -363,7 +372,7 @@ List operator+(const List& left, const List& right)
 }
 
 //#define BASE_CHECK
-#define HOME_WORK
+//#define HOME_WORK
 
 void main()
 {
@@ -420,5 +429,18 @@ void main()
 	}
 	cout << endl;
 #endif // HOME_WORK
+
+	List list = { 10,20,30 };
+	List list2;
+	try
+	{
+		//list.insert(42, 5);
+		//list2.pop_front();
+		list2.pop_back();
+	}
+	catch (const std::out_of_range& e)
+	{
+		cout << "Ошибка: " << e.what() << endl;
+	}
 
 }
